@@ -79,7 +79,7 @@ public class associationRules {
                                 ++count;
                         }
                         if((double)count/countAppearanceOfCurrent>=minConf && !treatedMotifs.contains(tmpMotif))
-                            treatedMotifs.add(currentMotif + "->" + removeSubstr(currentMotif,tmpMotif));
+                            treatedMotifs.add(currentMotif + "->" + removeSubstr(currentMotif,tmpMotif)+"/"+(double)count/countAppearanceOfCurrent);
                     }
                 }
 
