@@ -11,13 +11,16 @@ public class associationRules {
             if (line.charAt(i) == '(')
                 pos = i;
         }
-        return line.substring(0, pos);
+        if((line.length()-line.substring(pos,line.length()).length())==0)
+            return line.substring(0, pos);
+        else
+            return line.substring(0,pos-1);
     }
 
     void generate(String fileName, double minConf) {
         ArrayList<String> motifs = new ArrayList<String>();
         ArrayList<String> treatedMotifs = new ArrayList<String>();
-        ArrayList<String> readValues = new ArrayList<String>();
+        ArrayList<String> readValues = new ArrayList<>();
 
         try {
 
@@ -40,21 +43,35 @@ public class associationRules {
                 readValues.add(line);
 
             inValues.close();
+
             for (String currentMotif : motifs)
             {
-                int count=0;
+                int countAppearanceOfCurrent=0;
+                for (String tmp : readValues)
+                {
+                    if(tmp.contains(currentMotif))
+                        ++countAppearanceOfCurrent;
+                }
                 for (String tmpMotif : motifs)
                 {
-                    if(currentMotif.contains(tmpMotif)&&!currentMotif.matches(tmpMotif))
-                        ++count;
+                    if(tmpMotif.contains(currentMotif) && !tmpMotif.matches(currentMotif) &&tmpMotif.length()>1)
+                    {
+                        int count=0;
+                        for(String readValue : readValues)
+                        {
+                            if(readValue.contains(tmpMotif))
+                                ++count;
+                        }
+                        if((double)count/countAppearanceOfCurrent>=minConf && !treatedMotifs.contains(tmpMotif))
+                            treatedMotifs.add(currentMotif + " -> " + tmpMotif);
+                    }
                 }
-                if((double)(count/readValues.size())>=minConf && !treatedMotifs.contains(currentMotif))
-                    treatedMotifs.add(currentMotif);
 
             }
+
             for(String tmp : treatedMotifs)
             {
-                out.write(tmp);
+                out.write(tmp+"\n");
                 out.flush();
             }
             out.close();
