@@ -25,7 +25,7 @@ public class twitMinerMain {
         List<Status> status = twitter.getHomeTimeline();
         FileWriter out = new FileWriter("/Users/meddy/IdeaProjects/abc.csv");
         for (Status s : status) {
-            System.out.println(s.getUser().getName() + "  " + s.getText());
+
             out.write(s.getUser().getName() + "  " + s.getText() + "\n");
             out.flush();
         }
