@@ -10,6 +10,7 @@ import twitter4j.conf.ConfigurationBuilder;
 
 
 public class twitMinerMain {
+
     public static void main(String[] args) throws TwitterException, IOException {
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
         configurationBuilder.setDebugEnabled(true)
@@ -28,5 +29,8 @@ public class twitMinerMain {
             out.write(s.getUser().getName() + "  " + s.getText() + "\n");
             out.flush();
         }
+
+        }
     }
-}
+
+
