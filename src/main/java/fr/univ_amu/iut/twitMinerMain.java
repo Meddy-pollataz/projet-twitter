@@ -1,13 +1,13 @@
 package fr.univ_amu.iut;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.List;
 import twitter4j.Status;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
 
 public class twitMinerMain {
 
@@ -30,7 +30,5 @@ public class twitMinerMain {
             out.flush();
         }
 
-        }
     }
-
-
+}
