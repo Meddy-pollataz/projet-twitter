@@ -17,6 +17,22 @@ public class associationRules {
             return line.substring(0,pos-1);
     }
 
+    private String removeSubstr(String toRemove,String myString)
+    {
+        int pos=myString.indexOf(toRemove);
+
+        if(pos==-1)
+            return myString;
+
+        if(pos==0)
+            return myString.substring(toRemove.length()+1,myString.length());
+        else if(pos+toRemove.length()==myString.length())
+            return myString.substring(0,pos);
+        else
+            return myString.substring(0,pos)+myString.substring(pos+toRemove.length(),myString.length());
+
+    }
+
     void generate(String fileName, double minConf) {
         ArrayList<String> motifs = new ArrayList<String>();
         ArrayList<String> treatedMotifs = new ArrayList<String>();
@@ -63,7 +79,7 @@ public class associationRules {
                                 ++count;
                         }
                         if((double)count/countAppearanceOfCurrent>=minConf && !treatedMotifs.contains(tmpMotif))
-                            treatedMotifs.add(currentMotif + " -> " + tmpMotif);
+                            treatedMotifs.add(currentMotif + "->" + removeSubstr(currentMotif,tmpMotif));
                     }
                 }
 
