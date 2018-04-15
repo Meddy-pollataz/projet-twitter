@@ -14,9 +14,10 @@ public class associationRules {
         return line.substring(0, pos);
     }
 
-    void generate(String fileName, float minConf) {
+    void generate(String fileName, double minConf) {
         ArrayList<String> motifs = new ArrayList<String>();
         ArrayList<String> treatedMotifs = new ArrayList<String>();
+        ArrayList<String> readValues = new ArrayList<String>();
 
         try {
 
@@ -24,28 +25,38 @@ public class associationRules {
                 throw new Exception();
 
             String outputFileName = fileName.substring(0, fileName.length() - 4) + "minConf.out";
-            BufferedReader in = new BufferedReader(new FileReader(fileName));
+            String inputFileName = fileName.substring(0,fileName.length()-3) + "trans";
+            BufferedReader inMotifs = new BufferedReader(new FileReader(fileName));
+            BufferedReader inValues = new BufferedReader(new FileReader(inputFileName));
             FileWriter out = new FileWriter(outputFileName);
-            String tmpLine;
             String line;
 
-            while ((line = in.readLine()) != null) {
+            while ((line = inMotifs.readLine()) != null)
                 motifs.add(getMotif(line));
-            }
 
+            inMotifs.close();
+
+            while((line=inValues.readLine())!=null)
+                readValues.add(line);
+
+            inValues.close();
             for (String currentMotif : motifs)
             {
                 int count=0;
                 for (String tmpMotif : motifs)
                 {
-                    if(currentMotif.contains(tmpMotif)&&!currentMotif.equals(tmpMotif))
+                    if(currentMotif.contains(tmpMotif)&&!currentMotif.matches(tmpMotif))
                         ++count;
                 }
-                if((count/motifs.size())>minConf && !treatedMotifs.contains(currentMotif))
+                if((double)(count/readValues.size())>=minConf && !treatedMotifs.contains(currentMotif))
                     treatedMotifs.add(currentMotif);
 
             }
-            in.close();
+            for(String tmp : treatedMotifs)
+            {
+                out.write(tmp);
+                out.flush();
+            }
             out.close();
         } catch (FileNotFoundException e) {
 
